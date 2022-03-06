@@ -15,9 +15,8 @@ from pathlib import Path
 
 
 class _FanCharacterisationArgs(Tap):
-    f'''{__doc__}
-    results are written to stdout as list:
-        $duty: $frequency rpm'''
+    __doc__ = f'''{__doc__}\nresults are written to stdout as list:
+    $duty: $frequency rpm'''
     gpioChip: Path = '/dev/gpiochip0'   # Path to GPIO chip
     tachopin: int = 6                   # Pin Nr
     pwmchip_nr: int = 0                 # chip nr, as in /sys/class/pwm/pwmchip{pwmchip_nr}
@@ -87,6 +86,8 @@ def fan_characterisation(
 
 
 if __name__ == '__main__':
-    args = _FanCharacterisationArgs().parse_args()
-    fan_characterisation(**args.as_dict(), print_results=True)
+    argparse = _FanCharacterisationArgs()
+    argparse.description = _FanCharacterisationArgs.__doc__
+    args = argparse.parse_args().as_dict()
+    fan_characterisation(**args, print_results=True)
 
